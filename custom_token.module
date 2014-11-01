@@ -1,0 +1,41 @@
+<?php
+/**
+* @file
+* hid_custom_token module
+*
+* Provides a token to reference the url in the English language
+*/
+/**
+* Implementation of hook_help()
+*/
+function custom_token_help($path, $arg) {
+	if ($path == 'admin/help#hid_custom_token') {
+		$txt = 'Provides a token to reference the url in the English language.';
+		return '<p>'. t($txt) .'</p>';
+	} // if help
+} // function custom_token_help
+/**
+* Implementation of hook_token_info
+*/
+function custom_token_token_info(){
+	$info['tokens']['node']['english-language-path'] = array(
+	'name' => t('Custom URL path alias'),
+	'description' => t('Token used to set URL path alias in English for regional languages.'),
+	);
+	return $info;
+} // function custom_token_token_info
+	/**
+* Implementation of hook_tokens
+*/
+function custom_token_tokens($type, $tokens, array $data = array(), array $options = array()) {
+	if (isset($tokens['english-language-path'])) {
+	$tnid = $data['node']->tnid;
+		if (!empty($tnid)) {
+	$translations = translation_node_get_translations($tnid);
+			if (!empty($translations['en'])) {
+			$path = drupal_get_path_alias('node/' . $translations['en']->nid, 'en');
+			return array('[node:english-language-path]' => $path);
+			} // if has english translation
+		} // if has source node info
+	} // if right token is set
+} // function custom_token_tokens

@@ -1,0 +1,6 @@
+ame = Custom Token
+description = Provides a token to reference the url in the English language.
+core = 7.x
+version = "7.0-1.x"
+package = "Custom"
+recommends[] = redirect
